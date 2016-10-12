@@ -39,7 +39,6 @@ public class SearchEngine {
         final Map<String,Integer> scoresForWord = scores.get(word);
         List<String> sites = new ArrayList<String>(scoresForWord.keySet());
         Collections.sort(sites, new Comparator<String>() {
-            @Override
             public int compare(String o1, String o2) {
                 return scoresForWord.get(o2).compareTo(scoresForWord.get(o1));
             }            

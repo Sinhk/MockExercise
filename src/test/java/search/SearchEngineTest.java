@@ -30,16 +30,21 @@ public class SearchEngineTest {
     @InjectMocks
     SearchEngine se = new SearchEngine();
 
+
     @Before
     public void setUp() throws Exception {
         when(reader.readPage("vg.no")).thenReturn("ja nei hei hello kat nisse".split(" "));
         when(reader.readPage("tek.no")).thenReturn("data mobil hei hei".split(" "));
         when(reader.readPage("kake.no")).thenReturn("kake deig sukker egg mel is".split(" "));
+        se.indexPage("vg.no");
+        se.indexPage("tek.no");
+        se.indexPage("kake.no");
     }
 
     @Test
     public void indexPage() throws Exception {
-        String url = "vg.no";
+        String url = "elg.no";
+        when(reader.readPage(url)).thenReturn("dyr elg skog blåbær".split(" "));
         se.indexPage(url);
         verify(reader).readPage(url);
     }
@@ -48,9 +53,6 @@ public class SearchEngineTest {
     public void search() throws Exception {
         String ord = "hei";
         String word = "kake";
-        se.indexPage("vg.no");
-        se.indexPage("tek.no");
-        se.indexPage("kake.no");
         List<String> hei = se.search(ord);
         assertEquals("tek.no", hei.get(0));
         assertEquals("vg.no", hei.get(1));

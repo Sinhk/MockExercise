@@ -69,9 +69,10 @@ public class SearchEngineTest {
         // TODO: 12.10.2016 Sjekk med assert() om søkemotoren tåler at man søker på ord som ikke er indeksert. Fiks SearchEngine hvis det ikke er tilfelle.
         String finnesIkke = "Overbuljongterningpakkmesterassistent";
         try {
-            se.search(finnesIkke).isEmpty();
+            List<String> search = se.search(finnesIkke);
+            assertEquals("Should return empty list", 0, search.size());
         } catch (Exception e) {
-            assertTrue("Search with non indexed word", false);
+            assertTrue("Search with non indexed word throws exception", false);
         }
     }
 

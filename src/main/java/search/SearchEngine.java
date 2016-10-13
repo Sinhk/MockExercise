@@ -29,6 +29,9 @@ public class SearchEngine {
     
     public List<String> search(String word) {
         final Map<String,Integer> scoresForWord = scores.get(word);
+        if (scoresForWord == null) {
+            return new ArrayList<>();
+        }
         List<String> sites = new ArrayList<>(scoresForWord.keySet());
         Collections.sort(sites, new Comparator<String>() {
             public int compare(String o1, String o2) {

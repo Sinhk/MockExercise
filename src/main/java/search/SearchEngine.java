@@ -29,7 +29,7 @@ public class SearchEngine {
     
     public List<String> search(String word) {
         final Map<String,Integer> scoresForWord = scores.get(word);
-        List<String> sites = new ArrayList<String>(scoresForWord.keySet());
+        List<String> sites = new ArrayList<>(scoresForWord.keySet());
         Collections.sort(sites, new Comparator<String>() {
             public int compare(String o1, String o2) {
                 return scoresForWord.get(o2).compareTo(scoresForWord.get(o1));

@@ -9,6 +9,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -26,9 +28,9 @@ public class SearchEngineTest {
 
     @Before
     public void setUp() throws Exception {
-        when(reader.readPage("vg.no")).thenReturn(new String[]{"ja", "nei", "hei", "hello"});
-        when(reader.readPage("tek.no")).thenReturn(new String[]{"data", "mobil", "hei", "hei", "kat", "nisse"});
-        when(reader.readPage("kake.no")).thenReturn(new String[]{"kake", "deig", "sukker", "egg", "mel", "is"});
+        when(reader.readPage("vg.no")).thenReturn("ja nei hei hello kat nisse".split(" "));
+        when(reader.readPage("tek.no")).thenReturn("data mobil hei hei".split(" "));
+        when(reader.readPage("kake.no")).thenReturn("kake deig sukker egg mel is".split(" "));
     }
 
     @Test
@@ -45,13 +47,17 @@ public class SearchEngineTest {
         se.indexPage("tek.no");
         se.indexPage("kake.no");
         List<String> hei = se.search(ord);
-        assert hei.get(0).equals("tek.no");
-        assert hei.get(1).equals("vg.no");
-        assert hei.size() == 2;
+        assertEquals(hei.get(0), "tek.no");
+        assertEquals(hei.get(1), ("vg.no"));
+        assertEquals(hei.size(), 2);
 
         // TODO: 12.10.2016 Sjekk med assert() om søkemotoren tåler at man søker på ord som ikke er indeksert. Fiks SearchEngine hvis det ikke er tilfelle.
-        /*String finnesIkke = "Overbuljongterningpakkmesterassistent";
-        assert se.search(finnesIkke).isEmpty();*/
+        String finnesIkke = "Overbuljongterningpakkmesterassistent";
+        try {
+            se.search(finnesIkke).isEmpty();
+        } catch (Exception e) {
+            assertTrue("Search with non indexed word", false);
+        }
     }
 
 }

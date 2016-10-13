@@ -1,7 +1,9 @@
 package search;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -9,8 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -22,6 +23,9 @@ import static org.mockito.Mockito.when;
 public class SearchEngineTest {
     @Mock
     PageReader reader;
+
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
 
     @InjectMocks
     SearchEngine se = new SearchEngine();
@@ -43,14 +47,23 @@ public class SearchEngineTest {
     @Test
     public void search() throws Exception {
         String ord = "hei";
+        String word = "kake";
         se.indexPage("vg.no");
         se.indexPage("tek.no");
         se.indexPage("kake.no");
         List<String> hei = se.search(ord);
-        assertEquals(hei.get(0), "tek.no");
-        assertEquals(hei.get(1), ("vg.no"));
-        assertEquals(hei.size(), 2);
+        assertEquals("tek.no", hei.get(0));
+        assertEquals("vg.no", hei.get(1));
+        assertEquals(2, hei.size());
+        List<String> kake = se.search(word);
+        assertNotEquals("vg.no", kake.get(0));
+        assertNotEquals("tek.no", kake.get(0));
+        exception.expect(IndexOutOfBoundsException.class);
+        assertEquals(null, kake.get(1));
+    }
 
+    @Test
+    public void searchNonExist() throws Exception {
         // TODO: 12.10.2016 Sjekk med assert() om søkemotoren tåler at man søker på ord som ikke er indeksert. Fiks SearchEngine hvis det ikke er tilfelle.
         String finnesIkke = "Overbuljongterningpakkmesterassistent";
         try {

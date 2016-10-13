@@ -33,11 +33,8 @@ public class SearchEngine {
             return new ArrayList<>();
         }
         List<String> sites = new ArrayList<>(scoresForWord.keySet());
-        Collections.sort(sites, new Comparator<String>() {
-            public int compare(String o1, String o2) {
-                return scoresForWord.get(o2).compareTo(scoresForWord.get(o1));
-            }
-        });
+        Collections.sort(sites, (o1, o2) ->
+                scoresForWord.get(o2).compareTo(scoresForWord.get(o1)));
         return sites;
     }
 }

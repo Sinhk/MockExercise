@@ -45,7 +45,9 @@ public class SearchEngineTest {
         se.indexPage("tek.no");
         se.indexPage("kake.no");
         List<String> hei = se.search(ord);
-        System.out.println(hei.toString());
+        assert hei.get(0).equals("tek.no");
+        assert hei.get(1).equals("vg.no");
+        assert hei.size() == 2;
 
         // TODO: 12.10.2016 Sjekk med assert() om søkemotoren tåler at man søker på ord som ikke er indeksert. Fiks SearchEngine hvis det ikke er tilfelle.
         /*String finnesIkke = "Overbuljongterningpakkmesterassistent";
